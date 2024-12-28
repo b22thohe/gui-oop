@@ -1,10 +1,8 @@
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
-
-import static javax.swing.text.StyleConstants.setIcon;
 
 public class Gui implements ActionListener {
     private JFrame frame;
@@ -25,6 +23,9 @@ public class Gui implements ActionListener {
     private JPanel btnPanel;
     private JPanel iconBtnPanel;
     private JLabel lblThirdOutput;
+    private JTextField txtFieldName;
+    private JTextField txtFieldPhone;
+    private JTextArea txtArea;
 
     // Default Constructor for Main window
     public Gui(int xPos, int yPos, int frame_width,  int frame_height, String frame_title, int onCloseBehaviour) {
@@ -151,6 +152,58 @@ public class Gui implements ActionListener {
         thirdFrame.pack();
     }
 
+    public void CreateElementsForFifth(JFrame frame) {
+        JPanel fifthPanel = new JPanel();
+        fifthPanel.setLayout(new BoxLayout(fifthPanel, BoxLayout.Y_AXIS));
+        txtFieldName = new JTextField( 20);
+        txtFieldName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),"Namn:", TitledBorder.LEFT, TitledBorder.TOP));
+
+        // Wrapper panel to add horizontal space
+        JPanel nameWrapperPanel = new JPanel();
+        nameWrapperPanel.setLayout(new BorderLayout());
+        nameWrapperPanel.add(txtFieldName, BorderLayout.CENTER);
+        nameWrapperPanel.add(Box.createHorizontalStrut(20), BorderLayout.WEST);
+        nameWrapperPanel.add(Box.createHorizontalStrut(20), BorderLayout.EAST);
+
+        txtFieldPhone = new JTextField(20);
+        txtFieldPhone.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),"Telefonnummer:", TitledBorder.LEFT, TitledBorder.TOP));
+
+        JPanel phoneWrapperPanel = new JPanel();
+        phoneWrapperPanel.setLayout(new BorderLayout());
+        phoneWrapperPanel.add(txtFieldPhone, BorderLayout.CENTER);
+        phoneWrapperPanel.add(Box.createHorizontalStrut(20), BorderLayout.WEST);
+        phoneWrapperPanel.add(Box.createHorizontalStrut(20), BorderLayout.EAST);
+
+        JButton btnAdd = new JButton("Lägg till");
+        btnAdd.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnAdd.setActionCommand("addbtn");
+        btnAdd.addActionListener(this);
+
+        txtArea = new JTextArea(10, 30);
+        txtArea.setBorder(BorderFactory.createLoweredBevelBorder());
+        JScrollPane scrollPane = new JScrollPane(txtArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        JPanel listWrapperPanel = new JPanel();
+        listWrapperPanel.setLayout(new BorderLayout());
+        listWrapperPanel.add(scrollPane, BorderLayout.CENTER);
+        listWrapperPanel.add(Box.createHorizontalStrut(20), BorderLayout.WEST);
+        listWrapperPanel.add(Box.createHorizontalStrut(20), BorderLayout.EAST);
+
+        fifthPanel.add(nameWrapperPanel);
+        fifthPanel.add(Box.createVerticalStrut(10));
+        fifthPanel.add(phoneWrapperPanel);
+        fifthPanel.add(Box.createVerticalStrut(10));
+        fifthPanel.add(btnAdd);
+        fifthPanel.add(Box.createVerticalStrut(10));
+        fifthPanel.add(listWrapperPanel);
+        fifthPanel.add(Box.createVerticalStrut(10));
+
+        frame.add(fifthPanel);
+        frame.pack();
+    }
+
     private void outputInput(String text) {
         lblThirdOutput.setText("Du skrev: " + text);
     }
@@ -163,6 +216,13 @@ public class Gui implements ActionListener {
 
     public void setFrame(JFrame frame) {
         this.frame = frame;
+    }
+
+    public String ConcatToString(String str, String phone) {
+        StringBuilder concatenatedString = new StringBuilder();
+        concatenatedString.append(str).append(" ").append(phone).append("\r\n");
+
+        return concatenatedString.toString();
     }
 
     /**
@@ -220,6 +280,10 @@ public class Gui implements ActionListener {
                 }
                 boxLabel.setVisible(true);
                 frame.pack();
+                break;
+            case "addbtn":
+                String sEntry = ConcatToString(txtFieldName.getText(), txtFieldPhone.getText());
+                txtArea.append(sEntry);
                 break;
             default:
                 lblOutput.setText("No color/image");

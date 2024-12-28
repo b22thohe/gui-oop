@@ -27,5 +27,10 @@ public class Main {
         fourthWindow.CreateIconButtons("Surfa", fourthWindow.getFrame());
         fourthWindow.CreateIconButtons("Måla", fourthWindow.getFrame());
         fourthWindow.CreateIconButtons("Låda", fourthWindow.getFrame());
+
+        Gui fifthWindow = new Gui(150, 250, 300, 300, "Adressbok", DISPOSE_ON_CLOSE, fourthWindow);
+
+        // Elements for fifth window
+        fifthWindow.CreateElementsForFifth(fifthWindow.getFrame());
     }
 }
